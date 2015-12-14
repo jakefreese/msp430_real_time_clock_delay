@@ -1,5 +1,7 @@
 #include "RTC.h"
 #include "msp430g2553.h"
+#define BUTTON BIT3  // P1.3 Button on MSP430G2553
+#define LEDR   BIT6  // P1.6 LED 
 void main(void)
 {
 	WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
@@ -36,7 +38,7 @@ __interrupt void Port_1(void)
 {
 	if(P1IN & BUTTON);		// Start timer when button is high
 	incrementSeconds(2);    // count 2 seconds as long as button is high
-	P1OUT |= BIT6;		    // Set output high
+	P1OUT |= LEDR;		    // Set output high
 	incrementSeconds(60);	// count 60 seconds after output is high
-	P1IFG &= ~BIT6;         // Clear IFG, reset P1.6 low
+	P1IFG &= ~LEDR;         // Clear IFG, reset P1.6 low
 }
